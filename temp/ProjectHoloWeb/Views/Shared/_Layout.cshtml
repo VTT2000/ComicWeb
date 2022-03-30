@@ -1,0 +1,115 @@
+﻿
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    @*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">*@
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/Style.css " rel="stylesheet" />
+
+    <title>@ViewBag.Title</title>
+
+    
+
+</head>
+<body>
+    <div class="wrap-manga">
+        <div id="header" style="background: url('/Content/which-anime-character-are-you.jpg'); background-size: 100%; background-repeat: no-repeat;">
+            <div class="container clear fix">
+                <a href="/trang-chu" title="" class="logo ">
+                    <img src="~/Content/logo.png" alt="Holo comic" />
+                </a>
+            </div>
+        </div>
+        <div id="navigation">
+            <nav class="navbar navbar-expand-lg" id="theNavbar">
+                <div class="container container-fluid">
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/trang-chu">Trang chủ</a>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Thể Loại
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    @Html.Action("TypePartial","Comic")
+                                </ul>
+
+                            </li>
+                            <li class="nav-item dropdown">
+                                @if (Session["Taikhoan"].ToString().CompareTo("") == 0)
+                                {
+                                    <a class="nav-link" href="/dang-nhap">Đăng nhập</a>
+                                }
+                                else
+                                {
+                                    
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Welcome, @Session["Taikhoan"]
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <li><a class="dropdown-item" href="@Url.Action("Users","User",new { id = Session["TaikhoanID"].ToString()})">Thông tin tài khoản</a></li>
+                                        <li><a class="dropdown-item" href="@Url.Action("LogOut","User")">Thoát tài khoản</a></li>
+                                    </ul>
+                                }
+
+
+                            </li>
+                            
+                            
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="/tim-kiem">Tìm kiếm </a>
+                            </li>
+
+                        </ul>
+                        <form name="timkiem" class="d-flex" method="get" action="~/Comic/Search">
+                            <input class="form-control me-2" type="text" name="key">
+                            <button type="submit" class="btn btn-outline-light">Tìm Kiếm </button>
+
+                        </form>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div id="main">
+            @RenderBody()
+        </div>
+        <footer>
+            <div class="chap-footer">
+                <hr>
+                <div class="container">
+                    <div class="row">
+                        <div class="copyright">
+                            <p><b>Theo dõi: </b>https://www.facebook.com/holocomicteam <i class="fa fa-facebook-square"></i></p>
+                            <p><b>Liên lạc: </b>holocomic@gmail.com <i class="fa fa-envelope"></i></p>
+                            <p>All right - HoloComicTeam</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!--Nhúng mấy file thiết kế giao diện css ở trên hết, javascript cuối cung ở đây-->
+    <!--Lỗi nhúng từ web ko biết vì sao, nhưng nhúng cái bundle.min.js ở dưới 2 lần nó mới chạy cái thanh thể loại mới xổ xuống, tui đoán thui nhưng chắc do nhúng online-->
+    <!--Ờ nhớ coi lại button của thanh menu trang chủ, khi kéo trình duyệt nhỏ lại, thanh menu trang chủ hiện button có nhưng màu trùng nhìn nó như ẩn ý, coi trừng lỗi nhúng web như trên or vào coi lại file css, nội tuyết->trong->ngoài->mặc định -->
+    <!--Lỗi do nhúng sai thứ tụ và nhúng sai thư viện -->
+    <!--Lỗi đã sửa nhúng chính xác-->
+    @*<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>*@
+
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.slim.min.js"></script>
+    
+</body>
+

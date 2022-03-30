@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "Đăng nhập";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<body>
+
+                <div class="hidden-xs" style="margin-bottom:50px;"></div>
+                <div class="container">
+                    <div class="row vertical-center-row">
+                        <div class="col-md-4 col-center-block login-widget">
+                            <div>
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Đăng nhập</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="boxs">
+                                        <div class="division">
+                                            <div class="line l"></div>
+                                            <div class="line r"></div>
+                                        </div>
+                                        <div class="error" style="color:red">@ViewData["Loi"]</div>
+                                        <div class="form loginBox" style="display: block;">
+                                            <form method="post" action="dang-nhap">
+                                                <input id="email" class="form-control" placeholder="Email" name="email" type="text" value="@ViewData["email"]">
+                                                <input id="password" class="form-control" placeholder="Password" name="password" type="password" value="@ViewData["password"]">
+                                                
+                                                <input class="btn btn-default btn-login" value="Đăng nhập" type="submit">
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="forgot login-footer" style="display: block;">
+                                    <a href="/dang-ky">Tạo tài khoản mới?</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+</body>
+<script>
+    function dangkyThanhcong() {
+        return alert('Dang ky thanh cong');
+    }
+</script>

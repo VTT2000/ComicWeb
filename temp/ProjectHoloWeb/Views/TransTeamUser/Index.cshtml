@@ -1,0 +1,369 @@
+﻿@model IEnumerable<ProjectHoloWeb.Models.User>
+@using ProjectHoloWeb.Models;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ProjectHoloWeb.Models.User z = ViewBag.User as ProjectHoloWeb.Models.User;
+    List<User> users1 = Model.Where(p => p.IDtransper != "TRAPER000").OrderBy(p=>p.IDtransper).ToList() as List<User>;
+    List<User> users0 = Model.Where(p => p.IDtransper == "TRAPER000").ToList() as List<User>;
+    SelectList selects = ViewBag.Trans as SelectList;
+
+}
+
+<div class="container">
+
+    <div class="hidden-xs" style="margin-bottom:10px;"></div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-active auto-height">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Điều hướng</h3>
+                    <div class="box-body no-padding">
+                        <ul class="nav nav-pills nav-stacked" id=infor>
+                            <li role="presentation" class="active"><a href="@Url.Action("Users","User", new { id = Session["TaikhoanID"].ToString()})" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-user fa-fw"></i> Thông tin cá nhân</a></li>
+                            <li role="presentation"><a href="@Url.Action("Index","TheoDoi")"><i class="fa fa-eye fa-fw"></i> Truyện đang theo dõi</a></li>
+                            <li role="presentation"><a href="@Url.Action("Index","TransTeamUser")"><i class="fa fa-users"></i>Nhóm dịch</a></li>
+                            @if ((!String.IsNullOrEmpty(z.IDtransper))&& z.IDtransper.CompareTo("TRAPER001") == 0)
+                            {
+                                <li role="presentation"><a href="@Url.Action("Index","DangTruyen")"><i class="fa fa-upload"></i> Đăng truyện</a></li>
+                                <li role="presentation"><a href="@Url.Action("Index","DangChapter")"><i class="fa fa-upload"></i> Đăng chapter</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            @if (z.IDteam == null||z.IDteam.ToString().Length == 0)
+            {
+                <div>
+                    <p style="color:white; text-align:center">Bạn chưa thuộc nhóm dịch nào</p>
+                </div>
+                <div>
+                    <form action="~/TransTeamUser/DangKyTV" method="post">
+                        <label style="color:white">Chọn nhóm dịch</label>
+                        @Html.DropDownList("idTea", selects)
+                        <input type="submit" value="Đăng ký thành viên" />
+                    </form>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <p style="color:white; text-align:center">Nhóm dịch của bạn @z.TransTeam.team</p>
+                </div>
+                if (z.IDtransper.CompareTo("TRAPER000") == 0)
+                {
+                    <p style="color:white; text-align:center">Đang đọi quản lý nhóm hoặc chủ nhóm phê duyệt</p>
+                    <form action="~/TransTeamUser/HuyDangKyTV" method="post">
+                        <label style="color:white">Nhóm dịch: @z.TransTeam.team</label>
+                        <input type="submit" value="Hủy đăng ký" />
+                    </form>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="teamlist">
+                            <table border="1" style="background-color:black; color:white">
+                                @if (z.IDtransper.CompareTo("TRAPER001") == 0)
+                                {
+                                    <tr>
+                                        <th style="text-align:center">Username</th>
+                                        <th style="text-align:center">Vị trí trong nhóm</th>
+                                        <th style="text-align:center">Thao tác</th>
+                                        <th style="text-align:center">Thay đổi vị trí</th>
+                                    
+                                    </tr>
+                                    foreach (var item in users1)
+                                    {
+                                    <tr>
+                                        <td >
+                                            @item.username
+                                        </td>
+                                        <td >
+                                            @item.TransPermission.transperName
+                                        </td>
+                                        @if (z.IDuser == item.IDuser)
+                                        {
+                                            <td >
+                                                <a id="ExitMaster" dulieuUserName="@item.username" hanhdong="@Url.Action("RoiNhom","TransTeamUser", new { id = item.IDuser })" >Rời khỏi nhóm</a>
+                                            </td>
+                                            <td>
+                                            </td>
+                                
+                                        }                                         
+                                        
+                                        else
+                                        {
+                                            if (item.IDtransper.CompareTo("TRAPER001") == 0)
+                                            {
+                                                <td >
+                                                </td>
+                                                <td >
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td >
+                                        
+                                                    <a name="xoaTV" dulieuUN="@item.username" hanhdong="@Url.Action("RoiNhom","TransTeamUser", new { id = item.IDuser })">Xóa ra khỏi nhóm</a>
+                                        
+                                                </td>
+                                                <td >
+                                                    @if (item.IDtransper.CompareTo("TRAPER002") == 0)
+                                                    {
+                                                        <a name="thaydoivt" vt="1" dulieuUN ="@item.username" hanhdong="@Url.Action("Doivitrinhom","TransTeamUser", new { id = item.IDuser, vt = 1 })">Chủ nhóm</a>
+                                                        <span>||</span>
+                                                        <a name="thaydoivt" vt="3" dulieuUN ="@item.username" hanhdong="@Url.Action("Doivitrinhom","TransTeamUser", new { id = item.IDuser, vt = 3 })">Thành viên</a>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <a name="thaydoivt" vt="1" dulieuUN ="@item.username" hanhdong="@Url.Action("Doivitrinhom","TransTeamUser", new { id = item.IDuser, vt = 1 })">Chủ nhóm</a>
+                                                        <span>||</span>
+                                                        <a name="thaydoivt" vt="2" dulieuUN ="@item.username" hanhdong="@Url.Action("Doivitrinhom","TransTeamUser", new { id = item.IDuser, vt = 2 })">Quản lý</a>
+                                                    }
+                                                </td>
+                                    }
+
+                                }
+
+                            </tr>
+                                    }
+                                }
+                                @if (z.IDtransper.CompareTo("TRAPER002") == 0)
+                                {
+                                    <tr>
+                                        <th >Username</th>
+                                        <th >Vị trí trong nhóm</th>
+                                        <th >Thao tác</th>
+                                    </tr>
+                                    foreach (var item in users1)
+                                    {
+                                        <tr>
+                                            <td >
+                                                @item.username
+                                            </td>
+                                            <td >
+                                                @item.TransPermission.transperName
+                                            </td>
+                                            @if (z.IDuser == item.IDuser)
+                                            {
+                                                <td >
+                                                    <a id="qlexit" dulieuUN="@item.username" hanhdong="@Url.Action("RoiNhom","TransTeamUser", new { id = item.IDuser })">Rời khỏi nhóm</a>
+                                                </td>
+                                            
+                                            
+                                            }
+                                            else
+                                            {
+                                                if (item.IDtransper.CompareTo("TRAPER001") == 0 || item.IDtransper.CompareTo("TRAPER002") == 0)
+                                                {
+                                                    <td>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td >
+                                                        <a name="xoaTV" dulieuUN="@item.username" hanhdong="@Url.Action("RoiNhom","TransTeamUser", new { id = item.IDuser })">Xóa ra khỏi nhóm</a>
+                                                    
+                                                    </td>
+                                                }
+
+                                            }
+
+                                        </tr>
+                                    }
+                                }
+                                @if (z.IDtransper.CompareTo("TRAPER003") == 0)
+                                {
+                                    <tr>
+                                        <th >Username</th>
+                                        <th >Vị trí trong nhóm</th>
+                                    </tr>
+                                    foreach (var item in users1)
+                                    {
+                                        <tr>
+                                            <td >
+                                                @item.username
+                                            </td>
+                                            <td >
+                                                @item.TransPermission.transperName
+                                            </td>
+
+                                        </tr>
+                                    }
+                                }
+
+
+                            </table>
+                        </div>
+                    </div>
+
+
+
+                }
+
+                if (z.IDtransper.CompareTo("TRAPER003") == 0)
+                {
+                    <button id="tvexit" dulieuUN="@z.username" hanhdong="@Url.Action("RoiNhom","TransTeamUser", new { id = z.IDuser })">Rời nhóm</button>
+                }
+
+                if (z.IDtransper.CompareTo("TRAPER001") == 0 || z.IDtransper.CompareTo("TRAPER002") == 0)
+                {
+                    <div>
+                        <p style="color:white">Danh sách duyệt vào nhóm</p>
+                    </div>
+                    <div class="row">
+                        <div class="teamlist">
+                        <table border="1"  style="color:white">
+
+                            <tr>
+                                <th >Username</th>
+                                <th >Vị trí trong nhóm</th>
+                                <th >Thao tác</th>
+                            </tr>
+                            @foreach (var item in users0)
+                            {
+                                <tr>
+                                    <td style="text-align:center">
+                                        @item.username
+                                    </td>
+                                    <td style="text-align:center">
+                                        @item.TransPermission.transperName
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <a href="@Url.Action("Duyet","TransTeamUser", new { id = item.IDuser })">Duyệt</a>
+                                    </td>
+                                </tr>
+                            }
+                            </table>
+                        </div>
+                    </div>
+
+                }
+            }
+
+        </div>
+    </div>
+</div>
+
+<style>
+    td > a:hover {
+        color:red;
+    }
+    div > p {
+        margin-top:10px;
+    }
+</style>
+
+<script>
+    //chu nhom roi nhom
+    var the = document.getElementById("ExitMaster");
+    if (the != null) {
+        the.onclick = function () {
+            let xacnhan = confirm("Bạn thực sự muốn rời khỏi nhóm?\nVì bạn là chủ nhóm dịch nên hệ thống sẽ tự động chọn chủ nhóm dịch mới từ các quản lý nhóm");
+            if (xacnhan == true) {
+                alert("Bạn đã rời khỏi nhóm " + the.getAttribute("dulieuUserName") + " (!__!)");
+                location.href = the.getAttribute("hanhdong");
+            }
+            else {
+                alert("Chào mừng trở lại " + the.getAttribute("dulieuUserName") + " ✌ ≧◠◡◠≦✌");
+            }
+        };
+    }
+    // quan ly roi nhom
+    var ql = document.getElementById("qlexit");
+    if (ql != null) {
+        ql.onclick = function () {
+            let xacnhan = confirm("Bạn thực sự muốn rời khỏi nhóm, " + ql.getAttribute("dulieuUN") + " ?");
+            if (xacnhan == true) {
+                alert("Bạn đã rời khỏi nhóm, " + ql.getAttribute("dulieuUserName") + " (!__!)");
+                location.href = ql.getAttribute("hanhdong");
+            }
+        };
+    }
+    // thanh vien roi nhom
+    var tv = document.getElementById("tvexit");
+    if (tv != null) {
+        tv.onclick = function () {
+            let xacnhan = confirm("Bạn thực sự muốn rời khỏi nhóm, " + tv.getAttribute("dulieuUN") + " ?");
+            if (xacnhan == true) {
+                alert("Bạn đã rời khỏi nhóm, " + tv.getAttribute("dulieuUserName") + " (!__!)");
+                location.href = tv.getAttribute("hanhdong");
+            }
+        };
+    }
+    // xoa thanh vien ra khoi nhom ??? ko hoat dong tu day xuong
+    var deletedXoaTV = document.getElementsByName("xoaTV");
+    if (deletedXoaTV != null) {
+        let tong1 = deletedXoaTV.length;
+        for (i = 0; i < tong1; i++) {
+            let x = deletedXoaTV.item(i);
+            if (x != null) {
+                x.onclick = function () {
+                    let xacnhan0 = confirm("Bạn chắc chắn xóa thành viên " + x.getAttribute("dulieuUN") + " ra khỏi nhóm?");
+                    if (xacnhan0 == true) {
+                        alert("Bạn đã xóa thành viên " + x.getAttribute("dulieuUN") + " ra khỏi nhóm thành công.");
+                        location.href = x.getAttribute("hanhdong");
+                    }
+                };
+            }
+        }
+    }
+    
+    // thay doi vi tri nhom
+    var vtnhom = document.getElementsByName("thaydoivt");
+    if (vtnhom != null) {
+        let tong2 = vtnhom.length;
+        for (j = 0; j < tong2; j++) {
+            let x = vtnhom.item(j);
+            if (x != null) {
+                x.onclick = function () {
+                    if (x.getAttribute("vt").includes("1") == true) {
+                        let xacnhan = confirm("Bạn chắc chắn muốn đưa " + x.getAttribute("dulieuUN") + " thành chủ nhóm dịch?\nCảnh báo bạn sẽ không còn là chủ nhóm dịch nữa.");
+                        if (xacnhan == true) {
+                            alert("Bạn đã đưa " + x.getAttribute("dulieuUN") + " lên làm chủ nhóm dịch\nBạn không còn là chủ nhóm dịch nữa.");
+                            location.href = x.getAttribute("hanhdong");
+                        }
+                    }
+                    if (x.getAttribute("vt").includes("2") == true) {
+                        let xacnhan = confirm("Bạn chắc chắn muốn đưa " + x.getAttribute("dulieuUN") + " thành quản lý nhóm?");
+                        if (xacnhan == true) {
+                            alert("Bạn đã đưa " + x.getAttribute("dulieuUN") + " lên làm quản lý nhóm");
+                            location.href = x.getAttribute("hanhdong");
+                        }
+                    }
+                    if (x.getAttribute("vt").includes("3") == true) {
+                        let xacnhan = confirm("Bạn chắc chắn muốn " + x.getAttribute("dulieuUN") + " làm thành viên nhóm?");
+                        if (xacnhan == true) {
+                            alert("Bạn đã đưa " + x.getAttribute("dulieuUN") + " làm thành viên");
+                            location.href = x.getAttribute("hanhdong");
+                        }
+                    }
+                };
+                
+            }
+            
+        }
+
+    }
+    // quan ly va thanh viên muốn rời nhóm
+    // doan code java script mau tu viet test tren web
+    //var xoa = document.getElementsByName("ok");
+    //var n = xoa.length;
+    //for (i = 0; i < n; i++) {
+    //    let x = xoa.item(i);
+    //    xoa.item(i).onclick = function () {
+    //        var tb = confirm(" xoa ko ?");
+    //        if (tb == true) {
+    //            alert("so" + x.getAttribute("data"));
+    //        }
+    //        else {
+    //            alert("ko co a");
+    //        }
+    //    };
+    //}
+</script>

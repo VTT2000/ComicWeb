@@ -1,0 +1,95 @@
+﻿
+
+@using ProjectHoloWeb.Models;
+@model IEnumerable<ProjectHoloWeb.Models.ImageChapter>
+@{
+    ViewBag.Title = "Chương 1";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Chapter> chapters = ViewBag.listCHA as List<Chapter>;
+
+}
+
+<body>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v11.0" nonce="iVSHex2y"></script>
+    <div class="hidden-xs" style="margin-bottom:10px;">
+    </div>
+    <div class="container">
+        <div class="top-nav row row-gutter-5">
+
+            <div class="col-md-3 col-md-push-0 col-md-offset-1 col-sm-4 col-sm-push-2 col-xs-8 col-xs-push-2">
+                <select id="selectedchap" class="chapters-dropdown form-control" name="chapters">
+                    @foreach (var item in chapters)
+                    {
+                        if (item.chapter1 == ViewBag.chapter)
+                        {
+        <option value="@Url.Action("Chapter","Comic", new { id= item.chapter1, idc = ViewBag.IDcomic })" selected>@item.chapter1</option> }
+                        else
+                        {
+        <option value="@Url.Action("Chapter","Comic", new { id= item.chapter1, idc = ViewBag.IDcomic })">@item.chapter1</option>}
+
+                    }
+
+                </select>
+            </div>
+
+            <div class="col-md-2 col-md-pull-0 col-sm-2 col-sm-pull-8 col-xs-2 col-xs-pull-8">
+                <a href="@Url.Action("BeforeChap","Comic", new { id = ViewBag.chapter, idc = ViewBag.IDcomic})" class="btn btn-block btn-block-xs btn-success "><i class="fa fa-arrow-left"></i><span class="hidden-xs">Chap trước</span></a>
+            </div>
+            <div class="col-md-2 col-xs-2">
+                <a href="@Url.Action("AfterChap","Comic", new { id = ViewBag.chapter, idc = ViewBag.IDcomic})" class="btn btn-block btn-block-xs btn-success "><span class="hidden-xs">Chap sau</span><i class="fa fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="manga-container">
+            <div align="center"></div>
+            @foreach (var item in Model)
+            {
+<img src="@item.ImageLink" class="img-responsive page page-0" alt="" />}
+
+
+        </div>
+    </div>
+    <div class="hidden-xs"></div>
+
+    <div class="container">
+        <div class="bottom-nav row row-gutter-5">
+            <div class="col-md-3 col-md-push-0 col-md-offset-1 col-sm-4 col-sm-push-2 col-xs-8 col-xs-push-2">
+                <select class="chapters-dropdown form-control" name="chapters">
+                    @foreach (var item in chapters)
+                    {
+                        if (item.chapter1 == ViewBag.chapter)
+                        {
+        <option value="@item.chapter1" selected>@item.chapter1</option> }
+                        else
+                        {
+        <option value="@item.chapter1">@item.chapter1</option>}
+
+                    }
+
+                </select>
+            </div>
+            <div class="col-md-1 col-md-pull-0 col-sm-2 col-sm-pull-8 col-xs-2 col-xs-pull-8">
+                <a href="@Url.Action("BeforeChap","Comic", new { id = ViewBag.chapter, idc = ViewBag.IDcomic})" class="btn btn-block btn-block-xs btn-success "><i class="fa fa-arrow-left"></i></a>
+            </div>
+            <div class="col-md-1 col-xs-2">
+                <a href="@Url.Action("AfterChap","Comic", new { id = ViewBag.chapter, idc = ViewBag.IDcomic})" class="btn btn-block btn-block-xs btn-success "><i class="fa fa-arrow-right"></i></a>
+            </div>
+            <div class="col-md-2 col-xs-2">
+                <a href="#" class="btn btn-block btn-block-xs btn-danger" target="blank"><i class="fa fa-warning"></i> <span class="hidden-xs">Báo lỗi</span></a>
+            </div>
+        </div>
+        <div class="hidden-xs"></div>
+        <div id="fb-root">
+            <div class="https://localhost:44376" data-href="" data-width="" data-numposts="5"></div>
+        </div>
+    </div>
+</body>
+<script>
+    var selectChap = document.getElementById("selectedchap");
+    if (selectChap != null) {
+        selectChap.onchange = function () {
+            location.href = selectChap.value;
+        };
+    }
+
+</script>

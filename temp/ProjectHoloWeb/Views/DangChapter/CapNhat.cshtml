@@ -1,0 +1,155 @@
+﻿
+
+@using ProjectHoloWeb.Models;
+@using PagedList.Mvc;
+@model PagedList.PagedList<Chapter>
+
+@{
+    ViewBag.Title = "CapNhat";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ProjectHoloWeb.Models.User user = ViewBag.User as ProjectHoloWeb.Models.User;
+    Comic comic = ViewBag.Comic as Comic;
+}
+
+<h2>CapNhat</h2>
+
+<div class="container">
+
+    <div class="hidden-xs" style="margin-bottom:10px;"></div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-active auto-height">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Điều hướng</h3>
+                    <div class="box-body no-padding">
+                        <ul class="nav nav-pills nav-stacked" id=infor>
+                            <li role="presentation" class="active"><a href="@Url.Action("Users","User", new { id = Session["TaikhoanID"].ToString()})" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-user fa-fw"></i> Thông tin cá nhân</a></li>
+                            <li role="presentation"><a href="@Url.Action("Index","TheoDoi")"><i class="fa fa-eye fa-fw"></i> Truyện đang theo dõi</a></li>
+                            <li role="presentation"><a href="@Url.Action("Index","TransTeamUser")"><i class="fa fa-users"></i></i> Nhóm dịch</a></li>
+                            @if (user.IDtransper.CompareTo("TRAPER001") == 0)
+                            {
+                                <li role="presentation"><a href="@Url.Action("Index","DangTruyen")"><i class="fa fa-upload"></i> Đăng truyện</a></li>
+                                <li role="presentation"><a href="@Url.Action("Index","DangChapter")"><i class="fa fa-upload"></i> Đăng chapter</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            @*danh sach xu ly thao tac truyen*@
+            <div class="box box-active">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Các chap của bộ truyện @ViewBag.Comic.comic1</h3>
+                </div>
+                <div class="box-body no-padding">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Tên chap</th>
+                                    <th width="200">
+                                        Ngày cập nhật
+                                        <br />
+                                        Ngày tạo
+                                    </th>
+                                    <th width="200" class="text-right">
+                                        Thao tác
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a href="@Url.Action("Chapter","Comic", new { id = item.chapter1, idc = item.IDcomic})" title="" data-description=" " data-thumbnail=""><strong class="ajax-call">@item.chapter1</strong></a><span class="label label-danger hidden-xs"></span>
+                                        </td>
+                                        <td width="250">
+                                            <strong>
+                                                @item.update.Value.ToString("dd/MM/yyyy")
+                                                <br />
+                                                @item.created.Value.ToString("dd/MM/yyyy")
+                                            </strong>
+                                        </td>
+                                        <td class="text-rig	ht" width="250">
+
+                                            <a href="@Url.Action("UpdateChap","DangChapter", new { id = item.IDcomic, idchap = item.IDchapter })" title="">
+                                                Cập nhật
+                                            </a>
+                                            ||
+                                            <a name="xoaChap" tenchap="@item.chapter1" tencomic="@item.Comic.comic1" hanhdong="@Url.Action("DeleteChap","DangChapter", new { id = item.IDcomic, idchap = item.IDchapter, page = Page })" title="">
+                                                Xóa
+                                            </a>
+                                        </td>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">             
+                <div class="MenuTrang">
+                    @Html.PagedListPager(Model, Page => Url.Action("CapNhat", "DangChapter", new { id = comic.IDcomic, page = Page }))
+                </div>
+            </div>
+            <div class="row">
+                @*tro ve danh sach*@
+                @Html.ActionLink("Trở về", "Index", "DangChapter")
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    td > a:hover {
+        background-color: red;
+        color: black;
+    }
+</style>
+
+<script>
+    var xoaChaps = document.getElementsByName("xoaChap");
+    if (xoaChaps != null) {
+        let n = xoaChaps.length;
+        for (i = 0; i < n; i++) {
+            let x = xoaChaps.item(i);
+            if (x != null) {
+                x.onclick = function () {
+                    let xacnhan = confirm("Bạn thực sự muốn xóa " + x.getAttribute("tenchap") + " của bộ truyện tranh " + x.getAttribute("tencomic")+ " ?");
+                    if (xacnhan == true) {
+                        alert("Bạn đã xóa " + x.getAttribute("tenchap") + " của bộ truyện tranh " + x.getAttribute("tencomic")+ " thành công (T.T)");
+                        location.href = x.getAttribute("hanhdong");
+                    }
+                    else {
+                        alert("Cảm ơn bạn vì đã không xóa " + x.getAttribute("tenchap") + " của bộ truyện tranh " + x.getAttribute("tencomic") + " ✌ ≧◠◡◠≦✌");
+                    }
+                };
+            }
+        }
+
+    }
+
+
+    // doan code java script mau tu viet test tren web
+    //var xoa = document.getElementsByName("ok");
+    //var n = xoa.length;
+    //for (i = 0; i < n; i++) {
+    //    let x = xoa.item(i);
+    //    xoa.item(i).onclick = function () {
+    //        var tb = confirm(" xoa ko ?");
+    //        if (tb == true) {
+    //            alert("so" + x.getAttribute("data"));
+    //        }
+    //        else {
+    //            alert("ko co a");
+    //        }
+    //    };
+    //}
+</script>

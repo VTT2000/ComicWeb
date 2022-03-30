@@ -1,0 +1,101 @@
+﻿
+@using ProjectHoloWeb.Models;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ProjectHoloWeb.Models.User user = ViewBag.User as ProjectHoloWeb.Models.User;
+   
+
+}
+
+<div class="container">
+
+    <div class="hidden-xs" style="margin-bottom:10px;"></div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-active auto-height">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Điều hướng</h3>
+                    <div class="box-body no-padding">
+                        <ul class="nav nav-pills nav-stacked" id=infor>
+                            <li role="presentation" class="active"><a href="@Url.Action("Users","User", new { id = Session["TaikhoanID"].ToString()})" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-user fa-fw"></i> Thông tin cá nhân</a></li>
+                            <li role="presentation"><a href="@Url.Action("Index","TheoDoi")"><i class="fa fa-eye fa-fw"></i> Truyện đang theo dõi</a></li>
+                            <li role="presentation"><a href="@Url.Action("Index","TransTeamUser")"><i class="fa fa-users"></i> Nhóm dịch</a></li>
+                            @if (user.IDtransper.CompareTo("TRAPER001") == 0)
+                            {
+                                <li role="presentation"><a href="@Url.Action("Index","DangTruyen")"><i class="fa fa-upload"></i> Đăng truyện</a></li>
+                                <li role="presentation"><a href="@Url.Action("Index","DangChapter")"><i class="fa fa-upload"></i> Đăng chapter</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+
+            <div class="box box-active">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Tiến hành đăng truyện</h3>
+                </div>
+                <form method="POST" action="~/DangTruyen/Index" accept-charset="UTF-8" role="form">
+                    <input name="_token" type="hidden" value="vWt5xhbEHgmCNbvZvKtcG3ojRmjrfXBPRCfEOMRD">
+                    <div class="box-body">
+                        <div class="form-group row">
+                            <label for="comic" class="col-sm-2 col-form-label">Tên truyện:</label>
+                            <div class="col-sm-8">
+                                <input class="form-control col-sm-4" name="comic" type="text" value="" id="comic">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="description" class="col-sm-2 col-form-label">Mô tả:</label>
+                            <div class="col-sm-8">
+                                <input class="form-control col-sm-4" name="description" type="text" role="textbox" value="" id="description">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="status" class="col-sm-2 col-form-label">Trạng thái:</label>
+                            <div class="col-sm-8">
+                                <input class="form-control col-sm-4" name="status" type="text" value="" id="status">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="author" class="col-sm-2 col-form-label">Tác giả:</label>
+                            <div class="col-sm-8">
+                                <input class="form-control col-sm-4" name="author" type="text" value="" id="author">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="imageLink" class="col-sm-2 col-form-label">ImageLink bìa truyện:</label>
+                            <div class="col-sm-8">
+                                <input class="form-control col-sm-4" name="imageLink" type="text" value="" id="imageLink">
+                            </div>
+                        </div>
+
+                        <p>
+                            @ViewBag.Loi
+                        </p>
+
+                    </div>
+                    <div class="box-footer pdn">
+                        <input class="btn btn-success" type="submit" value="Đăng truyện">
+                    </div>
+                </form>
+            </div>
+
+       
+
+        </div>
+        </div>
+</div>
+
+<style>
+    .MenuTrang li {
+        display: inline;
+        background-color: orange;
+        color: white;
+        border-color: white;
+    }
+</style>
+

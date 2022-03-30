@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="TruyenTranh" Class="dbDataTruyenTranhDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=DESKTOP-7JKPSMP;Initial Catalog=TruyenTranh;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="TruyenTranhConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Admin" Member="Admins">
+    <Type Name="Admin">
+      <Column Name="useradmin" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="passadmin" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="fullname" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[User]" Member="Users">
+    <Type Name="User">
+      <Column Name="IDuser" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="mail" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="pass" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="username" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="created" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="updated" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="IDteam" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="IDtransper" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="User_PermissionUser" Member="PermissionUsers" ThisKey="IDuser" OtherKey="IDuser" Type="PermissionUser" />
+      <Association Name="TransPermission_User" Member="TransPermission" ThisKey="IDtransper" OtherKey="IDtransper" Type="TransPermission" IsForeignKey="true" />
+      <Association Name="TransTeam_User" Member="TransTeam" ThisKey="IDteam" OtherKey="IDteam" Type="TransTeam" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Author" Member="Authors">
+    <Type Name="Author">
+      <Column Name="IDauthor" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="author" Member="author1" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="created" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="updated" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Author_Comic" Member="Comics" ThisKey="IDauthor" OtherKey="IDauthor" Type="Comic" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Catergory" Member="Catergories">
+    <Type Name="Catergory">
+      <Column Name="IDcatergory" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="catergory" Member="catergory1" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="decriptions" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="created_at" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="update_at" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Catergory_ComicCatergory" Member="ComicCatergories" ThisKey="IDcatergory" OtherKey="IDcatergory" Type="ComicCatergory" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Chapter" Member="Chapters">
+    <Type Name="Chapter">
+      <Column Name="IDchapter" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="chapter" Member="chapter1" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="IDcomic" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="created" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="[update]" Member="update" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ImageLink" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Association Name="Chapter_ImageChapter" Member="ImageChapters" ThisKey="IDchapter" OtherKey="IDchapter" Type="ImageChapter" />
+      <Association Name="Comic_Chapter" Member="Comic" ThisKey="IDcomic" OtherKey="IDcomic" Type="Comic" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Comic" Member="Comics">
+    <Type Name="Comic">
+      <Column Name="IDcomic" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="comic" Member="comic1" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="created" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="updated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ratting" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="views" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="share" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IDauthor" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="description" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="ImageLink" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Association Name="Comic_Chapter" Member="Chapters" ThisKey="IDcomic" OtherKey="IDcomic" Type="Chapter" />
+      <Association Name="Comic_ComicCatergory" Member="ComicCatergories" ThisKey="IDcomic" OtherKey="IDcomic" Type="ComicCatergory" />
+      <Association Name="Comic_ComicTran" Member="ComicTrans" ThisKey="IDcomic" OtherKey="IDcomic" Type="ComicTran" />
+      <Association Name="Author_Comic" Member="Author" ThisKey="IDauthor" OtherKey="IDauthor" Type="Author" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ComicCatergory" Member="ComicCatergories">
+    <Type Name="ComicCatergory">
+      <Column Name="id" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IDcatergory" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IDcomic" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Catergory_ComicCatergory" Member="Catergory" ThisKey="IDcatergory" OtherKey="IDcatergory" Type="Catergory" IsForeignKey="true" />
+      <Association Name="Comic_ComicCatergory" Member="Comic" ThisKey="IDcomic" OtherKey="IDcomic" Type="Comic" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ComicTrans" Member="ComicTrans">
+    <Type Name="ComicTran">
+      <Column Name="id" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IDcomic" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IDteam" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Comic_ComicTran" Member="Comic" ThisKey="IDcomic" OtherKey="IDcomic" Type="Comic" IsForeignKey="true" />
+      <Association Name="TransTeam_ComicTran" Member="TransTeam" ThisKey="IDteam" OtherKey="IDteam" Type="TransTeam" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ImageChapter" Member="ImageChapters">
+    <Type Name="ImageChapter">
+      <Column Name="IDchapter" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ImageLink" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="IDimagechapter" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Association Name="Chapter_ImageChapter" Member="Chapter" ThisKey="IDchapter" OtherKey="IDchapter" Type="Chapter" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Permission" Member="Permissions">
+    <Type Name="Permission">
+      <Column Name="IDper" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="permission" Member="permission1" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Permission_PermissionUser" Member="PermissionUsers" ThisKey="IDper" OtherKey="IDper" Type="PermissionUser" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PermissionUser" Member="PermissionUsers">
+    <Type Name="PermissionUser">
+      <Column Name="id" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IDuser" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IDper" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Permission_PermissionUser" Member="Permission" ThisKey="IDper" OtherKey="IDper" Type="Permission" IsForeignKey="true" />
+      <Association Name="User_PermissionUser" Member="User" ThisKey="IDuser" OtherKey="IDuser" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TransPermission" Member="TransPermissions">
+    <Type Name="TransPermission">
+      <Column Name="IDtransper" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="transperName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="TransPermission_User" Member="Users" ThisKey="IDtransper" OtherKey="IDtransper" Type="User" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TransTeam" Member="TransTeams">
+    <Type Name="TransTeam">
+      <Column Name="IDteam" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="team" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="created" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="TransTeam_User" Member="Users" ThisKey="IDteam" OtherKey="IDteam" Type="User" />
+      <Association Name="TransTeam_ComicTran" Member="ComicTrans" ThisKey="IDteam" OtherKey="IDteam" Type="ComicTran" />
+    </Type>
+  </Table>
+</Database>

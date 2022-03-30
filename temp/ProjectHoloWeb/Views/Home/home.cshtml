@@ -1,0 +1,211 @@
+﻿@using ProjectHoloWeb.Models;
+@using PagedList.Mvc;
+@model PagedList.PagedList<Comic>
+
+@{
+    ViewBag.Title = "Trang chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<TransTeam> transTeams = ViewBag.listTEA as List<TransTeam>;
+    List<ComicTran> comicTrans = ViewBag.listCOMTRA as List<ComicTran>;
+    List<Catergory> catergories = ViewBag.listCAT as List<Catergory>;
+    List<ComicCatergory> comicCatergories = ViewBag.listCOMCAT as List<ComicCatergory>;
+    List<Chapter> chapters = ViewBag.listCHA as List<Chapter>;
+
+    Comic x = Model.ToList().OrderByDescending(p => p.created).Last();
+}
+<body>
+
+    <div class="container">
+        <div class="hidden-xs" style="margin-bottom:10px;"></div>
+        <div class="row row-gutter-5">
+            <div class="col-md-8">
+                <div id="feature-manga" class="clearfix">
+                    <a class="feature-cover pull-left" href="@Url.Action("DetailComic","Comic", new { id = x.IDcomic })">
+                        <!--<img src="~/Content/truyen-doremon-ngan-chap-01.png" class="img-responsive" alt="doraemon">-->
+                        <!--<img src="data:image/jpeg;base64,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"/>-->
+                        <img src="@x.ImageLink" class="img-reponsive" alt="@x.comic1" />
+
+                    </a>
+                    <div class="feature-info" style="padding-left:5px">
+                        <h3 class="feature-title">
+                            <a href="@Url.Action("DetailComic","Comic", new { id = x.IDcomic })" title="">
+                                <span>@x.comic1</span>
+                            </a>
+                        </h3>
+                        @*<p class="feature-line text-ellipsis">
+                                <strong>Tên khác:</strong>
+                                <span> @x.comic1</span>
+                            </p>*@
+                        <p class="feature-line">
+                            <strong>Thể loại:</strong>
+                            @foreach (ComicCatergory item in comicCatergories.FindAll(p => p.IDcomic == x.IDcomic))
+                            {
+                                foreach (Catergory i in catergories)
+                                {
+                                    if (i.IDcatergory == item.IDcatergory)
+                                    {
+                                        if (item == comicCatergories.FindAll(p => p.IDcomic == x.IDcomic).First())
+                                        {
+                                            <a href="@Url.Action("Type","Comic", new { id = i.IDcatergory})"><span> @i.catergory1</span></a> 
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("Type","Comic", new { id = i.IDcatergory})"><span>, @i.catergory1</span></a>
+                                        }
+
+                                    }
+                                }
+                            }
+                        </p>
+                        <p class="feature-line">
+                            <strong>Tác giả:</strong><a href="@Url.Action("Index","Author", new { id = x.Author.IDauthor })"><span> @x.Author.author1</span></a>
+                        </p>
+                        <p class="feature-line">
+                            <strong>Nhóm dịch:</strong>
+                            @foreach (ComicTran item in comicTrans.FindAll(p => p.IDcomic == x.IDcomic))
+                            {
+                                foreach (TransTeam i in transTeams)
+                                {
+                                    if (i.IDteam == item.IDteam)
+                                    {
+                                        if (item == comicTrans.FindAll(p => p.IDcomic == x.IDcomic).First())
+                                        {
+                                            <span> @i.team</span>
+                                        }
+                                        else
+                                        {
+                                            <span>, @i.team</span>
+                                        }
+
+                                    }
+                                }
+                            }
+                        </p>
+                        <p class="feature-line">
+                            <strong>Tình trạng:</strong>
+                            <span class="label label-info"> @x.status</span>
+                        </p>
+                        <p class="feature-line"><strong>Sơ lược:</strong><span> @x.description</span></p>
+                        <p class="feature-line"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="top-team">
+                    <div class="cover"></div>
+                    <div class="overlay clearfix">
+                        <div class="top-team-box-thumbnail pull-left">
+                            <h3 class="m-name"><a>
+                                    @foreach (ComicTran item in comicTrans.FindAll(p => p.IDcomic == x.IDcomic))
+                                    {
+                                        foreach (TransTeam i in transTeams)
+                                        {
+                                            if (i.IDteam == item.IDteam)
+                                            {
+                                                if (item == comicTrans.FindAll(p => p.IDcomic == x.IDcomic).First())
+                                                {
+                                                    <span> @i.team</span> 
+                                                    }
+                                                 else
+                                                    {
+                                                    <span>, @i.team</span>
+                                                   }
+
+                                                  }
+                                              }
+                                          }
+                                </a>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="top-team-box-vote">
+                        <p class="m-line"><strong>Sơ lược:</strong> </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h2 class="title">Truyện Mới</h2>
+        <div class="row row gutter-5">
+            <div class="col-md-8">
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-6 col-md-3 comic" style="margin: 0 20px">
+                            <a href="@Url.Action("DetailComic", "Comic", new { id = item.IDcomic })">
+                                <img src="@item.ImageLink">
+                            </a>
+                            <p></p>
+                            <h4><a href="@Url.Action("DetailComic", "Comic", new { id = item.IDcomic })">@item.comic1</a></h4>
+                            <p>
+                                @for (int i = 0; i < 5; i++)
+                                {
+                                    if (i < item.ratting)
+                                    {
+                                        <i class="fa fa-star" style="color:yellow" aria-hidden="true"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-star-o" style="color:yellow" aria-hidden="true"></i>
+                                    }
+                                }
+                            </p>
+
+                            @if (chapters.Where(p => p.IDcomic == item.IDcomic).Count() != 0)
+                            {
+                                <p><a href="@Url.Action("Chapter","Comic",new { id = @chapters.Where(p => p.IDcomic == item.IDcomic).OrderByDescending(m => m.chapter1).First().chapter1, idc = item.IDcomic})">@chapters.Where(p => p.IDcomic == item.IDcomic).OrderByDescending(m => m.chapter1).First().chapter1</a></p>
+                            }
+                            else
+                            {
+                                <p><a href="/truyen/@item.IDcomic">Truyện chưa cập nhật</a></p>
+                            }
+
+                        </div>
+                    }
+                </div>
+                <div class="row">                   
+                    <div class="MenuTrang">
+                        @Html.PagedListPager(Model, Page => Url.Action("home", "Home", new { page = Page }))
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="ctd-tabs ranking">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li style="color:white; margin-left:10px">Truyện hot</li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <table class="table">
+                                @foreach (var item in Model.ToList())
+                                {
+                                    <tbody>
+                                        <tr>
+                                            <td width="20">@item.IDcomic.Substring(3).</td>
+                                            <td><a href="/Comic/DetailComic/@item.IDcomic" >@item.comic1</a></td>
+                                            <td width="130" class="text-right">@item.views lượt xem</td>
+                                        </tr>
+                                    </tbody>
+                                }
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+
+        $(function () {
+            $('#myTab a').on('click', function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            })
+            $('#myTab a[href="#home"]').tab('show')
+        })
+    </script>
+   
+</body>

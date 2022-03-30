@@ -1,0 +1,109 @@
+﻿@using ProjectHoloWeb.Models;
+@using PagedList.Mvc;
+@model PagedList.PagedList<Comic>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Chapter> chapters = ViewBag.listCHA as List<Chapter>;
+    ProjectHoloWeb.Models.User user = ViewBag.User as ProjectHoloWeb.Models.User;
+}
+
+<div class="container">
+
+    <div class="hidden-xs" style="margin-bottom:10px;"></div>
+    
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-active auto-height">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Điều hướng</h3>
+                    <div class="box-body no-padding">
+                        <ul class="nav nav-pills nav-stacked" id=infor>
+                            <li role="presentation" class="active"><a href="@Url.Action("Users","User", new { id = Session["TaikhoanID"].ToString()})" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-user fa-fw"></i> Thông tin cá nhân</a></li>
+                            <li role="presentation"><a href="@Url.Action("Index","TheoDoi")"><i class="fa fa-eye fa-fw"></i> Truyện đang theo dõi</a></li>
+                            <li role="presentation"><a href="@Url.Action("Index","TransTeamUser")"><i class="fa fa-users"></i> Nhóm dịch</a></li>
+                            @if ((!String.IsNullOrEmpty(user.IDtransper)))
+                            {
+                                if (user.IDtransper.CompareTo("TRAPER001") == 0)
+                                {
+                                    <li role="presentation"><a href="@Url.Action("Index","DangTruyen")"><i class="fa fa-upload"></i> Đăng truyện</a></li>
+                                    <li role="presentation"><a href="@Url.Action("Index","DangChapter")"><i class="fa fa-upload"></i> Đăng chapter</a></li>
+                                 }
+
+                             }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div>
+                <h2 class="title">Truyện bạn đang theo dõi</h2>
+            </div>
+            @if (Model == null)
+            {
+                <div>
+                    <p style="color:white;text-align:center">Bạn chưa theo dõi truyện nào</p>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-6 col-md-3 comic" style="margin: 0 20px">
+                            <p>
+                                <a href="@Url.Action("DetailComic", "Comic", new { id = item.IDcomic })">
+                                    <img src="@item.ImageLink">
+                                </a>
+                            </p>
+                            <h4><a href="/truyen/@item.IDcomic">@item.comic1</a></h4>
+                            <p>
+                                @for (int i = 0; i < 5; i++)
+                                {
+                                    if (i < item.ratting)
+                                    {
+                                        <i class="fa fa-star" style="color:yellow" aria-hidden="true"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-star-o" style="color:yellow" aria-hidden="true"></i>
+                                    }
+                                }
+                            </p>
+
+                            @if (chapters.Where(p => p.IDcomic == item.IDcomic).Count() != 0)
+                            {
+                                <p><a href="@Url.Action("Chapter","Comic",new { id = @chapters.Where(p => p.IDcomic == item.IDcomic).OrderByDescending(m => m.chapter1).First().chapter1, idc = item.IDcomic})">@chapters.Where(p => p.IDcomic == item.IDcomic).OrderByDescending(m => m.chapter1).First().chapter1</a></p>
+                            }
+                            else
+                            {
+                                <p><a href="/truyen/@item.IDcomic">Truyện chưa cập nhật</a></p>
+                            }
+
+                        </div>
+                    }
+                </div>
+                <div class="row">
+                    @if (Model.Count == 0)
+                    {
+                        <p style="color:white">
+                            Bạn chưa theo dõi truyện nào
+                        </p>
+                    }
+                    else
+                    {
+                        <div class="MenuTrang">
+                            @Html.PagedListPager(Model, Page => Url.Action("Index", "TheoDoi", new { page = Page }))
+                        </div>
+                    }
+
+                </div>
+
+            }
+
+        </div>
+    </div>
+</div>
+

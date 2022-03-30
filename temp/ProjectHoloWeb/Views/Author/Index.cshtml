@@ -1,0 +1,58 @@
+﻿@using ProjectHoloWeb.Models;
+@model IEnumerable<ProjectHoloWeb.Models.Comic>
+@{ ViewBag.Title = "Index";
+   Layout = "~/Views/Shared/_Layout.cshtml";
+
+   List<Chapter> chapters = ViewBag.listCHA as List<Chapter>; 
+}
+
+<body>
+    <div class="container">
+        
+        <div class="hidden-xs" style="margin-bottom:10px;">
+            
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-active">
+                    <h2 class="title">Truyện của tác giả @ViewBag.tentacgia</h2>
+                    @if (Model != null)
+                    {
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                <div class="col-6 col-md-3 comic" style="margin: 0 20px">
+                    <p>
+                        <a href="@Url.Action("DetailComic", "Comic", new { id = item.IDcomic })">
+                            <img src="@item.ImageLink">
+                        </a>
+                    </p>
+                    <h4><a href="/truyen/@item.IDcomic">@item.comic1</a></h4>
+                    <p>
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            if (i < item.ratting)
+                            {
+                <i class="fa fa-star" style="color:yellow" aria-hidden="true"></i> }
+            else
+            {
+                <i class="fa fa-star-o" style="color:yellow" aria-hidden="true"></i>}
+        }
+                    </p>
+
+                    @if (chapters.Where(p => p.IDcomic == item.IDcomic).Count() != 0)
+                    {
+                <p><a href="@Url.Action("Chapter","Comic",new { id = @chapters.Where(p => p.IDcomic == item.IDcomic).OrderByDescending(m => m.chapter1).First().chapter1, idc = item.IDcomic})">@chapters.Where(p => p.IDcomic == item.IDcomic).OrderByDescending(m => m.chapter1).First().chapter1</a></p> }
+            else
+            {
+                <p><a href="/truyen/@item.IDcomic">Truyện chưa cập nhật</a></p>}
+
+                </div>}
+                </div>}
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

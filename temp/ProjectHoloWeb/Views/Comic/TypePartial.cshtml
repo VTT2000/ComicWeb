@@ -1,0 +1,77 @@
+﻿@model IEnumerable<ProjectHoloWeb.Models.Catergory>
+
+@*@foreach (var item in Model)
+{
+    <li><a class="dropdown-item" href="@Url.Action("Type","Comic", new { id = item.IDcatergory})">@item.catergory1</a></li>
+}*@
+
+
+
+<ul class="submenu">
+    <li class="subHeader">THỂ LOẠI</li>
+    @foreach (var item in Model)
+    {
+        <li><a class="dropdown-item" href="@Url.Action("Type","Comic", new { id = item.IDcatergory})">@item.catergory1</a></li>
+    }
+</ul>
+
+<style>
+    
+    .dropdown-menu {
+        border: none;
+        border-radius: 0;
+        font-size: 12px;
+    }
+
+        .dropdown-menu > li > a {
+            color: white;
+            font-weight: 700;
+            padding: 8px 15px;
+            text-shadow: none;
+            text-transform: uppercase;
+        }
+
+            .dropdown-menu > li > a:hover {
+                background: white;
+                color: black;
+            }
+
+        .dropdown-menu .divider {
+            margin: 4px 0;
+        }
+
+    ul.submenu {
+        margin: 0;
+        padding: 0;
+        width: 590px;
+    }
+
+        ul.submenu li {
+            display: inline-block;
+            padding: 5px;
+            width: 115px;
+        }
+
+            ul.submenu li.subHeader {
+                background: #ff0000;
+                color: ##ffffff;
+                display: block;
+                font-size: 12px;
+                font-weight: 700;
+                padding: 8px 15px;
+                text-transform: uppercase;
+                width: auto;
+            }
+
+            ul.submenu li a {
+                color: #fff;
+                display: block;
+                font-size: 12px;
+                padding: 5px 10px;
+                text-decoration: none;
+            }
+
+                ul.submenu li a:hover {
+                    color: black;
+                }
+</style>

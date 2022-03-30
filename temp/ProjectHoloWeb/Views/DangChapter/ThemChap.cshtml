@@ -1,0 +1,114 @@
+﻿
+@using ProjectHoloWeb.Models
+@{
+    ViewBag.Title = "ThemChap";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ProjectHoloWeb.Models.User user = ViewBag.User as ProjectHoloWeb.Models.User;
+    Comic comic = Model as Comic;
+    List<Chapter> chapters = ViewBag.listCHA as List<Chapter>;
+
+    List<Chapter> list = chapters.FindAll(p=>p.IDcomic == comic.IDcomic);
+
+}
+
+<div class="container">
+
+    <div class="hidden-xs" style="margin-bottom:10px;"></div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-active auto-height">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Điều hướng</h3>
+                    <div class="box-body no-padding">
+                        <ul class="nav nav-pills nav-stacked" id=infor>
+                            <li role="presentation" class="active"><a href="@Url.Action("Users","User", new { id = Session["TaikhoanID"].ToString()})" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-user fa-fw"></i> Thông tin cá nhân</a></li>
+                            <li role="presentation"><a href="@Url.Action("Index","TheoDoi")"><i class="fa fa-eye fa-fw"></i> Truyện đang theo dõi</a></li>
+                            <li role="presentation"><a href="@Url.Action("Index","TransTeamUser")"><i class="fa fa-users"></i></i> Nhóm dịch</a></li>
+                            @if (user.IDtransper.CompareTo("TRAPER001") == 0)
+                            {
+                                <li role="presentation"><a href="@Url.Action("Index","DangTruyen")"><i class="fa fa-upload"></i> Đăng truyện</a></li>
+                                <li role="presentation"><a href="@Url.Action("Index","DangChapter")"><i class="fa fa-upload"></i> Đăng chapter</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+
+            <div class="box box-active">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        Tiến hành đăng chapter cho @comic.comic1
+                        <br />
+                        @if (list.Count != 0)
+                        {
+                            <strong>Chap mới nhất hiện tại là: @list.Last().chapter1</strong>
+                        }
+                        else
+                        {
+                            <strong>Truyện chưa có chap nào</strong>
+                        }
+
+                    </h3>
+                </div>
+                <form method="POST" action="~/DangChapter/ThemChap" accept-charset="UTF-8" role="form">
+                    <input name="_token" type="hidden" value="vWt5xhbEHgmCNbvZvKtcG3ojRmjrfXBPRCfEOMRD">
+                    <div class="box-body">
+                        <div class="form-group row">
+                            <label for="idComic" class="col-sm-2 col-form-label">ID COMIC</label>
+                            <div class="col-sm-8">
+                                <input class="form-control col-sm-4" name="idComic" type="text" value="@ViewBag.IdCom" id="idComic">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="chapter" class="col-sm-2 col-form-label">Tên chapter</label>
+                            <div class="col-sm-8">
+                                <input class="form-control col-sm-4" name="chapter" type="text" value="" id="chapter">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="imageLink" class="col-sm-2 col-form-label">ImageLink tất cả chap</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control col-sm-4" name="imageLink" type="text" role="textbox" value="" id="imageLink" rows="10"></textarea>
+                            </div>
+                        </div>
+
+                        <p>
+                            @ViewBag.Loi
+                        </p>
+
+                    </div>
+                    <div class="box-footer pdn">
+                        <input class="btn btn-success" type="submit" value="Tạo chapter">
+                    </div>
+                </form>
+            </div>
+
+            @*keo tu the loai qua danh sach hien thi*@
+
+            <div class="row">
+                @*tro ve danh sach*@
+                @Html.ActionLink("Trở về","Index","DangChapter")
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .MenuTrang li {
+        display: inline;
+        background-color: orange;
+        color: white;
+        border-color: white;
+    }
+</style>
+
+
+

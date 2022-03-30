@@ -1,0 +1,117 @@
+﻿@using ProjectHoloWeb.Models;
+@model IEnumerable<ProjectHoloWeb.Models.ComicCatergory>
+
+@{
+    ViewBag.Title = "Thể loại";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<ComicTran> comicTrans = ViewBag.listCOMTRA as List<ComicTran>;
+    List<Chapter> chapters = ViewBag.listCHA as List<Chapter>;
+    List<Catergory> catergories = ViewBag.listCAT as List<Catergory>;
+
+}
+
+<body>
+    <div class="container">
+        <div class="hidden-xs" style="margin-bottom:10px;"></div>
+        <div class="row">
+            <div class="col-md-9">
+                <div class="box box-active auto-height no-active-href">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Truyện thuộc thể loại: @ViewBag.CAT</h3>
+                        <ul class="list-unstyled list-inline sub-filter">
+                            <li><a class="btn btn-sm btn-success" href="@Url.Action("Type","Comic",new { id = ViewBag.ID , sort = 1})">Theo tên truyện</a></li>
+                            <li><a class="btn btn-sm btn-success" href="?sort=2">Theo truyện xem nhiều</a></li>
+                            <li><a class="btn btn-sm btn-success" href="?sort=3">Theo Truyện có chương mới</a></li>
+                            <li><a class="btn btn-sm btn-success" href="?sort=4">Theo Truyện mới up</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="box-body no-padding">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Tên truyện</th>
+                                        <th width="200">Nhóm dịch</th>
+                                        <th width="200" class="text-right">Chương mới nhất</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var item in Model.ToList())
+                                    {
+
+                                        foreach (var i in comicTrans)
+                                        {
+
+                                            if (item.IDcomic == i.IDcomic)
+                                            {
+                                    <tr>
+                                        <td>
+                                            <a href="@Url.Action("DetailComic","Comic", new { id = item.IDcomic })" title="" data-description=" " data-thumbnail=""><strong class="ajax-call">@item.Comic.comic1</strong></a><span class="label label-danger hidden-xs"></span>
+                                        </td>
+                                        <td width="250">
+                                            @if (i.TransTeam.team != null)
+                                            {
+                                        <a href="" title="@i.TransTeam.team"><strong> @i.TransTeam.team</strong></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="" title=""><strong> vo danh</strong></a>
+                                    }
+
+                                        </td>
+
+                                        <td class="text-rig	ht" width="200">
+                                            <a href="@Url.Action("Chapter","Comic", new { id = chapters.Where(p=>p.IDcomic == item.IDcomic).OrderByDescending(p=>p.chapter1).First().chapter1.ToString() , idc = item.IDcomic})" title="1">
+                                                @chapters.Where(p => p.IDcomic == item.IDcomic).OrderByDescending(p => p.chapter1).First().chapter1.ToString()
+                                            </a>
+                                        </td>
+
+
+                                    </tr>
+                                                
+                                            }
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="box box-active auto-height no-active-href">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Trạng thái</h3>
+                    </div>
+                    <div class="box-body no-padding">
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="?sort=5" title="Ngưng">Ngưng</a></li>
+                            <li><a href="?sort=6" title="Đang tiến hành">Đang tiến hành</a></li>
+                            <li><a href="?sort=7" title="Đã hoàn thành">Đã hoàn thành</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box box-active auto-height no-active-href">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Thể loại</h3>
+                    </div>
+                    <div class="box-body no-padding">
+                        <ul class="nav nav-pills nav-stacked">
+                            @foreach (var item in catergories)
+                            {
+                                <li><a href="@Url.Action("Type","Comic", new { id = item.IDcatergory})" title="Thể loại @item.catergory1 ">@item.catergory1</a></li>
+                            }
+
+
+                        </ul>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

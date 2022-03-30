@@ -1,0 +1,150 @@
+﻿
+@using ProjectHoloWeb.Models;
+
+
+@{
+    ViewBag.Title = "Thông tin truyện";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+
+    List<TransTeam> transTeams = ViewBag.listTEA as List<TransTeam>;
+    List<ComicTran> comicTrans = ViewBag.listCOMTRA as List<ComicTran>;
+    List<Catergory> catergories = ViewBag.listCAT as List<Catergory>;
+    List<ComicCatergory> comicCatergories = ViewBag.listCOMCAT as List<ComicCatergory>;
+    List<Chapter> chapters = ViewBag.listCHA as List<Chapter>;
+    Comic comic = Model as Comic;
+}
+
+<body>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v11.0" nonce="iVSHex2y"></script>
+    <div class="container">
+        <div class="hidden-xs" style="margin-bottom:10px;"></div>
+        <div class="row row-gutter-5">
+            <div class="col-md-9">
+                <div class="box box-active box-manga auto-height">
+                    <div class="box-body cover">
+                        <div class="__info-container">
+                            <div class="__left">
+                                <div class="__image">
+                                    <img src="@comic.ImageLink" alt="@comic.comic1" />
+                                </div>
+
+                                <div class="__follow">
+                                    @if (Session["Taikhoan"].ToString().CompareTo("") == 0)
+                                    {
+                        <button type="button" class="btn btn-success btn-block btn-follow" onclick="thongbao()">
+                            <i class="fa fa-bookmark"></i>
+                            <span id="txtTheodoi">Theo dõi truyện này</span>
+                        </button> }
+                    else
+                    {
+        <button type="button" class="btn btn-success btn-block btn-follow" onclick="location.href = '@Url.Action("Theodoi","Comic",new { id = comic.IDcomic})'">
+            <i class="fa fa-bookmark"></i>
+            <span id="txtTheodoi">@ViewBag.TD</span>
+        </button>}
+
+                                </div>
+                            </div>
+                            <div class="__info">
+                                <h3 class="__name" id="txtTentruyen">@comic.comic1 </h3>
+                                @*<p><strong>Tên khác:</strong>Chú mèo mấy tới từ tương lai @ViewBag.Loi</p>*@
+
+                                <p>
+                                    <strong>Thể loại:</strong>
+                                    @foreach (ComicCatergory item in comicCatergories.FindAll(p => p.IDcomic == comic.IDcomic))
+                                    {
+                                        foreach (Catergory i in catergories)
+                                        {
+                                            if (i.IDcatergory == item.IDcatergory)
+                                            {
+                                                if (item == comicCatergories.FindAll(p => p.IDcomic == comic.IDcomic).First())
+                                                {
+                        <a href="@Url.Action("Type","Comic", new { id = i.IDcatergory})"><span> @i.catergory1</span></a> }
+                    else
+                    {
+        <a href="@Url.Action("Type","Comic", new { id = i.IDcatergory})"><span>, @i.catergory1</span></a>}
+
+}
+}
+}
+
+                                </p>
+
+                                <p><strong>Tác giả:</strong> <a href="@Url.Action("Index","Author", new { id = comic.Author.IDauthor })">@comic.Author.author1</a></p>
+
+                                <p>
+                                    <strong>Nhóm dịch:</strong>
+                                    @foreach (ComicTran item in comicTrans.FindAll(p => p.IDcomic == comic.IDcomic))
+                                    {
+                                        foreach (TransTeam i in transTeams)
+                                        {
+                                            if (i.IDteam == item.IDteam)
+                                            {
+                                                if (item == comicTrans.FindAll(p => p.IDcomic == comic.IDcomic).First())
+                                                {
+                        <a>@i.team</a> }
+                    else
+                    {
+        <a>, @i.team</a>}
+
+}
+}
+}
+                                </p>
+
+                                <p><strong>Tình trạng:</strong> @comic.status</p>
+
+                                <div class="__description">
+                                    <p>@comic.description</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box box-active auto-height">
+                    <div class="box-body no-padding">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Tên chương</th>
+                                        <th width="120" class="text-center hidden-xs">Lượt xem</th>
+                                        <th width="120" class="text-center">Thời gian đăng</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="table-scroll" style="overflow: hidden; outline: none;" tabindex="0">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        @foreach (var item in chapters)
+                                        {
+                            <tr>
+                                <td><a href="@Url.Action("Chapter","Comic", new { id = item.chapter1 , idc = item.IDcomic})" title=""><strong>@item.chapter1</strong></a></td>
+                                <td width="120" class="text-center hidden-xs">@item.Comic.views</td>
+                                <td width="120" class="text-center">@item.created.Value.ToShortDateString()</td>
+                            </tr>}
+
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="https://localhost:44376/" data-href="" data-width="" data-numposts="5"></div>
+        </div>
+    </div>
+    <script>
+        function thongbao() {
+            return alert("Bạn cần đăng nhập để theo dõi truyện này.")
+        }
+    </script>
+</body>
+
+
+
+
+
